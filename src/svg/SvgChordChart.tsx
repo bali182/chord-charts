@@ -3,12 +3,12 @@ import { Controller } from './Controller'
 import { BarModel, Model, SectionModel } from '../model'
 import { Theme } from '../Theme'
 
-export type ChordChartProps = {
+export type SvgChordChartProps = {
   theme: Theme
   model: Model
 }
 
-export class ChordChart extends PureComponent<ChordChartProps> {
+export class SvgChordChart extends PureComponent<SvgChordChartProps> {
   private renderSections(controller: Controller) {
     const sections = controller.getModel().sections
     return sections.map((section) => this.renderSection(controller, section))

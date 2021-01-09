@@ -6,7 +6,7 @@ export const sampleTheme: Theme = {
   height: 720,
   spacing: 20,
   defaultSectionTheme: {
-    barHeight: 100,
+    barHeight: 90,
     name: 'default',
     color: 'black',
     radius: 15,
