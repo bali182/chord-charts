@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Controller } from './Controller'
-import { BarModel, Model, SectionModel } from '../model'
-import { Theme } from '../Theme'
+import { BarModel, Model, SectionModel } from '../model/Model'
+import { Theme } from '../model/Theme'
 
 export type SvgChordChartProps = {
   theme: Theme

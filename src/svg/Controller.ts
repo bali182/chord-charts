@@ -1,5 +1,5 @@
-import { BarModel, Model, SectionModel } from '../model'
-import { SectionTheme, Theme } from '../Theme'
+import { BarModel, Model, SectionModel } from '../model/Model'
+import { SectionTheme, Theme } from '../model/Theme'
 import { isNil, range, sum } from '../utils'
 import Color from 'color'
 import { createRoundedRectPath } from './svgUtils'

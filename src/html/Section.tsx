@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
-import { SectionModel } from '../Model'
-import { SectionTheme, Theme } from '../Theme'
+import { SectionModel } from '../model/Model'
+import { SectionTheme, Theme } from '../model/Theme'
 import { Bar } from './Bar'
+import { ChordChartContext } from './ChordChartContext'
 import { isLightColor } from './colorUtils'
-import { CommonProps } from './CommonProps'
 import { getSectionTheme } from './utils'
 
-export type SectionProps = CommonProps & {
+export type SectionProps = {
   section: SectionModel
 }
 
@@ -17,6 +17,7 @@ const sectionStyle = (theme: Theme, sTheme: SectionTheme, isLast: boolean): Reac
   backgroundColor: sTheme.color,
   marginBottom: isLast ? 0 : theme.spacing,
   minHeight: sTheme.barHeight,
+  boxShadow: '0px 2px 5px 1px rgba(0,0,0,0.2)',
 })
 
 const titleContainerStyle = (sTheme: SectionTheme): React.CSSProperties => ({
@@ -50,27 +51,31 @@ const barsContainerStyle = (sTheme: SectionTheme, groupBars: number): React.CSSP
 
 export class Section extends PureComponent<SectionProps> {
   render() {
-    const { theme, model, section } = this.props
-    const isLast = model.sections.indexOf(section) === model.sections.length - 1
-    const sTheme = getSectionTheme(theme, section)
     return (
-      <div style={sectionStyle(theme, sTheme, isLast)} key={section.name}>
-        <div style={titleContainerStyle(sTheme)}>
-          <div style={titleStyle(sTheme)}>{section.name}</div>
-        </div>
-        <div style={barsContainerStyle(sTheme, section.groupBars)}>
-          {section.bars.map((bar, index) => (
-            <Bar
-              key={`${section.name}-${index}`}
-              bar={bar}
-              section={section}
-              model={model}
-              theme={theme}
-              isActive={false} // TODO
-            />
-          ))}
-        </div>
-      </div>
+      <ChordChartContext.Consumer>
+        {({ theme, model }) => {
+          const { section } = this.props
+          const isLast = model.sections.indexOf(section) === model.sections.length - 1
+          const sTheme = getSectionTheme(theme, section)
+          return (
+            <div style={sectionStyle(theme, sTheme, isLast)} key={section.name}>
+              <div style={titleContainerStyle(sTheme)}>
+                <div style={titleStyle(sTheme)}>{section.name}</div>
+              </div>
+              <div style={barsContainerStyle(sTheme, section.groupBars)}>
+                {section.bars.map((bar, index) => (
+                  <Bar
+                    key={`${section.name}-${index}`}
+                    bar={bar}
+                    section={section}
+                    isActive={true} // TODO
+                  />
+                ))}
+              </div>
+            </div>
+          )
+        }}
+      </ChordChartContext.Consumer>
     )
   }
 }

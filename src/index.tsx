@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { sampleModel, sampleTheme } from './sampleModel'
-import { HtmlChordChart } from './html/HtmlChordChart'
+import { sampleModel, sampleTheme } from './model/sampleModel'
+import { ChordChart } from './html/ChordChart'
 
-render(<HtmlChordChart model={sampleModel} theme={sampleTheme} />, document.getElementById('root'))
+render(<ChordChart model={sampleModel} theme={sampleTheme} />, document.getElementById('root'))

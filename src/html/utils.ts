@@ -1,5 +1,5 @@
-import { SectionModel } from '../Model'
-import { Theme } from '../Theme'
+import { SectionModel } from '../model/Model'
+import { Theme } from '../model/Theme'
 import { isNil } from '../utils'
 
 export function getSectionTheme(theme: Theme, section: SectionModel) {

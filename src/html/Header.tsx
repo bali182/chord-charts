@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Theme } from '../Theme'
-import { CommonProps } from './CommonProps'
-
-export type HeaderProps = CommonProps
+import { Theme } from '../model/Theme'
+import { ChordChartContext } from './ChordChartContext'
 
 const headerStyle = (theme: Theme): React.CSSProperties => ({
   fontSize: theme.width * 0.03,
@@ -11,10 +9,12 @@ const headerStyle = (theme: Theme): React.CSSProperties => ({
   textAlign: 'center',
 })
 
-export class Header extends PureComponent<CommonProps> {
+export class Header extends PureComponent {
   render() {
-    const { theme, model } = this.props
-    const { name } = model
-    return <div style={headerStyle(theme)}>{name}</div>
+    return (
+      <ChordChartContext.Consumer>
+        {({ theme, model }) => <div style={headerStyle(theme)}>{model.name}</div>}
+      </ChordChartContext.Consumer>
+    )
   }
 }
