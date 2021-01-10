@@ -4,10 +4,13 @@ import { Header } from './Header'
 import { Section } from './Section'
 import { Model } from '../model/Model'
 import { Theme } from '../model/Theme'
+import { SelectionModel } from '../model/Selection'
 
 export type ChordChartProps = {
   theme: Theme
   model: Model
+  readOnly: boolean
+  selection: SelectionModel
 }
 
 export class ChordChart extends PureComponent<ChordChartProps> {
@@ -17,10 +20,11 @@ export class ChordChart extends PureComponent<ChordChartProps> {
   }
 
   private createContext(): ChordChartContextType {
-    const { model, theme } = this.props
+    const { model, theme, selection } = this.props
     return {
       model,
       theme,
+      selection,
     }
   }
 

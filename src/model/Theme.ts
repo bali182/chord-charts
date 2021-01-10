@@ -1,16 +1,15 @@
-export type SectionTheme = Partial<{
-  name: string
+export type SectionTheme = {
   barHeight: number
   spacing: number
   radius: number
   strokeWidth: number
-  color: string
-}>
+  opacity: number,
+  colors: string[]
+}
 
 export type Theme = {
   width: number
   height: number
   spacing: number
-  defaultSectionTheme: Required<SectionTheme>
-  sectionThemes: SectionTheme[]
+  section: SectionTheme
 }

@@ -13,14 +13,14 @@ export type ChordChartSelection = {
   id: string
 }
 
-export type Selection = BarSelection | SectionSelection | ChordChartSelection
+export type SelectionModel = BarSelection | SectionSelection | ChordChartSelection
 
-export function isBarSelection(sel: Selection): sel is BarSelection {
+export function isBarSelection(sel: SelectionModel): sel is BarSelection {
   return sel.type === 'bar-selection'
 }
-export function isSectionSelection(sel: Selection): sel is SectionSelection {
+export function isSectionSelection(sel: SelectionModel): sel is SectionSelection {
   return sel.type === 'section-selection'
 }
-export function isChordChartSelection(sel: Selection): sel is ChordChartSelection {
+export function isChordChartSelection(sel: SelectionModel): sel is ChordChartSelection {
   return sel.type === 'chord-chart-selection'
 }

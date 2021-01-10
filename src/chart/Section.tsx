@@ -3,39 +3,38 @@ import { SectionModel } from '../model/Model'
 import { SectionTheme, Theme } from '../model/Theme'
 import { Bar } from './Bar'
 import { ChordChartContext } from './ChordChartContext'
-import { isLightColor } from './colorUtils'
-import { getSectionTheme } from './utils'
+import { getSectionColor, isLightColor, withOpacity } from './utils'
 
 export type SectionProps = {
   section: SectionModel
 }
 
-const sectionStyle = (theme: Theme, sTheme: SectionTheme, isLast: boolean): React.CSSProperties => ({
+const sectionStyle = (theme: Theme, sTheme: SectionTheme, isLast: boolean, color: string): React.CSSProperties => ({
   display: 'flex',
   flexDirection: 'row',
   borderRadius: sTheme.radius,
-  backgroundColor: sTheme.color,
+  backgroundColor: withOpacity(color, sTheme.opacity),
   marginBottom: isLast ? 0 : theme.spacing,
   minHeight: sTheme.barHeight,
   boxShadow: '0px 2px 5px 1px rgba(0,0,0,0.2)',
 })
 
-const titleContainerStyle = (sTheme: SectionTheme): React.CSSProperties => ({
+const titleContainerStyle = (sTheme: SectionTheme, color: string): React.CSSProperties => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   borderTopLeftRadius: sTheme.radius,
   borderBottomLeftRadius: sTheme.radius,
   padding: sTheme.spacing,
-  backgroundColor: isLightColor(sTheme.color) ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)',
+  backgroundColor: isLightColor(color) ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)',
 })
 
-const titleStyle = (sTheme: SectionTheme): React.CSSProperties => ({
+const titleStyle = (sTheme: SectionTheme, color: string): React.CSSProperties => ({
   fontSize: sTheme.barHeight * 0.25,
   transform: 'rotate(-180deg)',
   writingMode: 'vertical-lr',
   textAlign: 'center',
-  color: isLightColor(sTheme.color) ? '#fff' : '#000',
+  color: isLightColor(color) ? '#fff' : '#000',
 })
 
 const barsContainerStyle = (sTheme: SectionTheme, groupBars: number): React.CSSProperties => ({
@@ -55,21 +54,17 @@ export class Section extends PureComponent<SectionProps> {
       <ChordChartContext.Consumer>
         {({ theme, model }) => {
           const { section } = this.props
-          const isLast = model.sections.indexOf(section) === model.sections.length - 1
-          const sTheme = getSectionTheme(theme, section)
+          const index = model.sections.indexOf(section)
+          const isLast = index === model.sections.length - 1
+          const sColor = getSectionColor(theme, index)
           return (
-            <div style={sectionStyle(theme, sTheme, isLast)} key={section.name}>
-              <div style={titleContainerStyle(sTheme)}>
-                <div style={titleStyle(sTheme)}>{section.name}</div>
+            <div style={sectionStyle(theme, theme.section, isLast, sColor)} key={section.name}>
+              <div style={titleContainerStyle(theme.section, sColor)}>
+                <div style={titleStyle(theme.section, sColor)}>{section.name}</div>
               </div>
-              <div style={barsContainerStyle(sTheme, section.groupBars)}>
+              <div style={barsContainerStyle(theme.section, section.groupBars)}>
                 {section.bars.map((bar, index) => (
-                  <Bar
-                    key={`${section.name}-${index}`}
-                    bar={bar}
-                    section={section}
-                    isActive={true} // TODO
-                  />
+                  <Bar key={`${section.name}-${index}`} bar={bar} section={section} />
                 ))}
               </div>
             </div>

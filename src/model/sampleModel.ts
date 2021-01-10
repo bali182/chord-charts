@@ -1,68 +1,62 @@
 import { Model, SectionModel } from './Model'
 import { Theme } from './Theme'
-import { nanoid } from 'nanoid'
+import { id } from '../chart/utils'
 
 export const sampleTheme: Theme = {
   width: 1280,
   height: 720,
   spacing: 20,
-  defaultSectionTheme: {
+  section: {
     barHeight: 90,
-    name: 'default',
-    color: 'black',
     radius: 15,
     spacing: 20,
     strokeWidth: 3,
+    opacity: 0.9,
+    colors: ['#107E7D', '#610345', '#044B7F'],
   },
-  sectionThemes: [
-    { name: 'teal', color: '#107E7D' },
-    { name: 'purple', color: '#610345' },
-    { name: 'blue', color: '#044B7F' },
-  ],
 }
 
 export const VerseSection: SectionModel = {
-  id: nanoid(5),
+  id: id(),
   name: 'Verse',
   groupBars: 4,
   bars: [
-    { id: nanoid(5), chords: ['Am'] },
-    { id: nanoid(5), chords: ['D'] },
-    { id: nanoid(5), chords: ['F'] },
-    { id: nanoid(5), chords: ['G'], label: 'second inversion' },
-    { id: nanoid(5), chords: ['Am'] },
-    { id: nanoid(5), chords: ['D'], label: 'triad only' },
+    { id: id(), chords: ['Am'] },
+    { id: id(), chords: ['D'] },
+    { id: id(), chords: ['F'] },
+    { id: id(), chords: ['G'], label: 'second inversion' },
+    { id: id(), chords: ['Am'] },
+    { id: id(), chords: ['D'], label: 'triad only' },
   ],
-  theme: 'teal',
 }
 
 export const PreChorusSection: SectionModel = {
-  id: nanoid(5),
+  id: id(),
   name: 'PreChorus',
   groupBars: 4,
   bars: [
-    { id: nanoid(5), chords: ['D'] },
-    { id: nanoid(5), chords: ['F7'] },
+    { id: id(), chords: ['D'] },
+    { id: id(), chords: ['F7'] },
   ],
-  theme: 'blue',
 }
 
 export const ChorusSection: SectionModel = {
-  id: nanoid(5),
+  id: id(),
   name: 'Chorus',
   groupBars: 4,
   bars: [
-    { id: nanoid(5), chords: ['D'] },
-    { id: nanoid(5), chords: ['F'] },
-    { id: nanoid(5), chords: ['C'] },
-    { id: nanoid(5), chords: ['G'] },
+    { id: id(), chords: ['D'] },
+    { id: id(), chords: ['F'] },
+    { id: id(), chords: ['C'] },
+    { id: id(), chords: ['G'] },
   ],
-  theme: 'purple',
 }
 
 export const sampleModel: Model = {
-  id: nanoid(5),
+  id: id(),
   name: 'Sample model',
+  bpm: 120,
+  key: 'A minor',
   sections: [VerseSection, PreChorusSection, ChorusSection],
   sectionSequence: [
     VerseSection.id,

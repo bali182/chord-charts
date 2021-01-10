@@ -8,13 +8,14 @@ export type SectionModel = {
   id: string
   name: string
   bars: BarModel[]
-  theme: string
   groupBars: number
 }
 
 export type Model = {
   id: string
   name: string
+  bpm: number
+  key: string
   sections: SectionModel[]
   sectionSequence: string[]
 }
