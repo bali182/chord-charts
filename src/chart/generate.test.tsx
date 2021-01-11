@@ -2,7 +2,8 @@ import { sampleModel, sampleTheme } from '../model/sampleModel'
 import { createBrowser, toPng } from './toPng'
 import fs from 'fs'
 
-import { path } from '@ffmpeg-installer/ffmpeg'
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'
+import { path as ffprobePath } from '@ffprobe-installer/ffprobe'
 import ffmpeg from 'fluent-ffmpeg'
 
 describe('generate', () => {
@@ -26,7 +27,8 @@ describe('generate', () => {
     // const page = await browser.newPage()
     // const buffer = await toPng(page, sampleTheme, sampleModel, null)
 
-    ffmpeg.setFfmpegPath(path)
+    ffmpeg.setFfmpegPath(ffmpegPath)
+    ffmpeg.setFfprobePath(ffprobePath)
 
     await new Promise<void>((done, error) => {
       // ffmpeg()
@@ -46,14 +48,10 @@ describe('generate', () => {
       ffmpeg()
         .input('images/001_verse_K8QB1.png')
         .loop(3)
-
-        .input('images/002_verse_xigJ8.png')
-        .loop(4)
-
         .fps(30)
         .on('end', () => done())
         .on('error', (err) => error(err))
-        .save('images/video.avi')
+        .save('images/video.mp4')
     })
     console.log('hi')
   })

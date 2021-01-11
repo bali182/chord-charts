@@ -9,12 +9,12 @@ export type SectionProps = {
   section: SectionModel
 }
 
-const sectionStyle = (theme: Theme, sTheme: SectionTheme, isLast: boolean, color: string): React.CSSProperties => ({
+const sectionStyle = (theme: Theme, sTheme: SectionTheme, color: string): React.CSSProperties => ({
   display: 'flex',
   flexDirection: 'row',
   borderRadius: sTheme.radius,
   backgroundColor: withOpacity(color, sTheme.opacity),
-  marginBottom: isLast ? 0 : theme.spacing,
+  marginBottom: theme.spacing,
   minHeight: sTheme.barHeight,
   boxShadow: '0px 2px 5px 1px rgba(0,0,0,0.2)',
 })
@@ -55,10 +55,9 @@ export class Section extends PureComponent<SectionProps> {
         {({ theme, model }) => {
           const { section } = this.props
           const index = model.sections.indexOf(section)
-          const isLast = index === model.sections.length - 1
           const sColor = getSectionColor(theme, index)
           return (
-            <div style={sectionStyle(theme, theme.section, isLast, sColor)} key={section.name}>
+            <div style={sectionStyle(theme, theme.section, sColor)} key={section.name}>
               <div style={titleContainerStyle(theme.section, sColor)}>
                 <div style={titleStyle(theme.section, sColor)}>{section.name}</div>
               </div>

@@ -1,9 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { sampleModel, sampleTheme } from './model/sampleModel'
-import { ChordChart } from './chart/ChordChart'
+import { Provider } from 'react-redux'
+import { AppLayout } from './AppLayout'
+import { store } from './state/store'
 
 render(
-  <ChordChart model={sampleModel} theme={sampleTheme} selection={null} readOnly={false} />,
+  <Provider store={store}>
+    <AppLayout />
+  </Provider>,
   document.getElementById('root')
 )

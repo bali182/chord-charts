@@ -10,10 +10,13 @@ export type SectionSelection = {
 
 export type ChordChartSelection = {
   type: 'chord-chart-selection'
-  id: string
 }
 
-export type SelectionModel = BarSelection | SectionSelection | ChordChartSelection
+export type ThemeSelection = {
+  type: 'theme-selection'
+}
+
+export type SelectionModel = BarSelection | SectionSelection | ChordChartSelection | ThemeSelection
 
 export function isBarSelection(sel: SelectionModel): sel is BarSelection {
   return sel.type === 'bar-selection'
@@ -23,4 +26,7 @@ export function isSectionSelection(sel: SelectionModel): sel is SectionSelection
 }
 export function isChordChartSelection(sel: SelectionModel): sel is ChordChartSelection {
   return sel.type === 'chord-chart-selection'
+}
+export function isThemeSelection(sel: SelectionModel): sel is ThemeSelection {
+  return sel.type === 'theme-selection'
 }
