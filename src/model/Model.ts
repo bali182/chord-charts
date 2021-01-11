@@ -1,6 +1,6 @@
 export type BarModel = {
   id: string
-  chords: string[]
+  chord: string
   label?: string
 }
 

@@ -5,12 +5,13 @@ import { Model } from './model/Model'
 import { ChordChart } from './chart/ChordChart'
 import { ChordChartAppState } from './state/state'
 import { Theme } from './model/Theme'
-import { SelectionModel } from './model/Selection'
+import { isBarSelection, isSectionSelection, SelectionModel } from './model/Selection'
 import { EditorHeader, EditorTitle } from './editor/EditorHeader'
 import { setSelection } from './state/selection/selection.actionCreators'
 import { updateChart } from './state/chart/chart.actionCreators'
 import { id } from './chart/utils'
-import { ChartMutatorContext, ChartMutatorContextType } from './ChartMutatorContext'
+import { isNil } from './utils'
+import { ChordChartContext, ChordChartContextType } from './chart/ChordChartContext'
 
 const chordChartViewStyle = css({
   height: '100vh',
@@ -64,17 +65,93 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
 
     setSelection({ selection: { type: 'section-selection', id: sectionId } })
   }
-  addBar = (sectionId: string) => {}
-  moveSectionUp = (sectionId: string) => {}
-  moveSectionDown = (sectionId: string) => {}
-  deleteSection = (sectionId: string) => {}
-  deleteBar = (barId: string) => {}
+  addBar = (sectionId: string) => {
+    const { updateChart, setSelection, chart } = this.props
+    const barId = id()
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.map((section) => {
+          if (section.id === sectionId) {
+            return {
+              ...section,
+              bars: section.bars.concat([
+                {
+                  chord: '%',
+                  id: barId,
+                  label: null,
+                },
+              ]),
+            }
+          }
+          return section
+        }),
+      },
+    })
+
+    setSelection({ selection: { type: 'bar-selection', id: barId } })
+  }
+  moveSectionUp = (sectionId: string) => {
+    const { updateChart, chart } = this.props
+    const index = chart.sections.findIndex((section) => section.id === sectionId)
+    if (index <= 0) {
+      return // Can't move up first guy or nonexisting
+    }
+    const movedSection = chart.sections[index]
+    const newSections = chart.sections.filter((section) => section.id !== sectionId)
+    newSections.splice(index - 1, 0, movedSection)
+    updateChart({
+      chart: { ...chart, sections: newSections },
+    })
+  }
+  moveSectionDown = (sectionId: string) => {
+    const { updateChart, chart } = this.props
+    const index = chart.sections.findIndex((section) => section.id === sectionId)
+    if (index === chart.sections.length - 1 || index < 0) {
+      return // Can't move down last guy or nonexisting
+    }
+    const movedSection = chart.sections[index]
+    const newSections = chart.sections.filter((section) => section.id !== sectionId)
+    newSections.splice(index + 1, 0, movedSection)
+    updateChart({
+      chart: { ...chart, sections: newSections },
+    })
+  }
+  deleteSection = (sectionId: string) => {
+    const { updateChart, setSelection, chart, selection } = this.props
+    if (!isNil(selection) && isSectionSelection(selection) && selection.id === sectionId) {
+      setSelection({ selection: null })
+    }
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.filter((section) => section.id !== sectionId),
+        sectionSequence: chart.sectionSequence.filter((id) => id !== sectionId),
+      },
+    })
+  }
+  deleteBar = (barId: string) => {
+    const { updateChart, setSelection, selection, chart } = this.props
+    if (!isNil(selection) && isBarSelection(selection) && selection.id === barId) {
+      setSelection({ selection: null })
+    }
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.map((section) => ({
+          ...section,
+          bars: section.bars.filter((b) => b.id !== barId),
+        })),
+      },
+    })
+  }
   setSelection = (selection: SelectionModel) => {
     const { setSelection } = this.props
     setSelection({ selection })
   }
 
-  createMutatorContext(): ChartMutatorContextType {
+  createMutatorContext(): ChordChartContextType {
+    const { chart, selection, theme } = this.props
     return {
       addSection: this.addSection,
       addBar: this.addBar,
@@ -83,20 +160,23 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
       deleteSection: this.deleteSection,
       deleteBar: this.deleteBar,
       setSelection: this.setSelection,
+      chart,
+      selection,
+      theme,
+      readOnly: false,
     }
   }
 
   render() {
-    const { chart, theme, selection } = this.props
     return (
       <div className={chordChartViewStyle}>
         <EditorHeader>
           <EditorTitle title="chord-charts" />
         </EditorHeader>
         <div className={scrollAreaStyle}>
-          <ChartMutatorContext.Provider value={this.createMutatorContext()}>
-            <ChordChart model={chart} theme={theme} selection={selection} readOnly={false} />
-          </ChartMutatorContext.Provider>
+          <ChordChartContext.Provider value={this.createMutatorContext()}>
+            <ChordChart />
+          </ChordChartContext.Provider>
         </div>
       </div>
     )

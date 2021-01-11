@@ -13,3 +13,11 @@ export function sum(a: number, b: number): number {
 export function isNil(input: any): input is null | undefined {
   return input === null || input === undefined
 }
+
+export function flatMap<T, E>(list: T[], fn: (item: T) => E[]): E[] {
+  const results: E[] = []
+  for (let i = 0, length = list.length; i < length; i += 1) {
+    results.push(...fn(list[i]))
+  }
+  return results
+}

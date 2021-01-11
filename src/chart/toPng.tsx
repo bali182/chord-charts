@@ -6,6 +6,7 @@ import { Theme } from '../model/Theme'
 import { HtmlWrapper } from './HtmlWrapper'
 import { ChordChart } from './ChordChart'
 import { BarSelection } from '../model/Selection'
+import { ChordChartContext } from './ChordChartContext'
 
 export async function createBrowser(theme: Theme): Promise<Browser> {
   return puppeteer.launch({
@@ -17,7 +18,9 @@ export async function createBrowser(theme: Theme): Promise<Browser> {
 export async function toPng(page: Page, theme: Theme, model: Model, selection: BarSelection = null): Promise<Buffer> {
   const content = renderToString(
     <HtmlWrapper>
-      <ChordChart model={model} theme={theme} readOnly={true} selection={selection} />
+      <ChordChartContext.Provider value={{ chart: model, theme, selection, readOnly: true }}>
+        <ChordChart />
+      </ChordChartContext.Provider>
     </HtmlWrapper>
   )
   await page.setViewport({ width: theme.width, height: theme.height })

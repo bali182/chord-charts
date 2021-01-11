@@ -9,7 +9,7 @@ const headerStyle = css({
   alignItems: 'center',
   backgroundColor: '#eee',
   borderBottomColor: '#bbb',
-  borderBottomWidth: '1px',
+  borderBottomWidth: '0px',
   borderBottomStyle: 'solid',
   padding: '10px',
 })

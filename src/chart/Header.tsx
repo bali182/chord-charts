@@ -13,7 +13,7 @@ export class Header extends PureComponent {
   render() {
     return (
       <ChordChartContext.Consumer>
-        {({ theme, model }) => <div style={headerStyle(theme)}>{model.name}</div>}
+        {({ theme, chart }) => <div style={headerStyle(theme)}>{chart.name}</div>}
       </ChordChartContext.Consumer>
     )
   }

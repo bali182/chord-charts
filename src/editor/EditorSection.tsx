@@ -13,10 +13,10 @@ const sectionHeaderStyle = css({
   padding: '10px',
   backgroundColor: '#eee',
   borderBottomColor: '#bbb',
-  borderBottomWidth: '1px',
+  borderBottomWidth: '0px',
   borderBottomStyle: 'solid',
   borderTopColor: '#bbb',
-  borderTopWidth: '1px',
+  borderTopWidth: '0px',
   borderTopStyle: 'solid',
 
   ':first-child': {

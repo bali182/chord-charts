@@ -4,7 +4,7 @@ import { Model } from '../../model/Model'
 export function createEmptyChart(): Model {
   return {
     id: id(),
-    name: 'Sample model',
+    name: 'New chord chart',
     bpm: 120,
     key: 'A minor',
     sections: [],

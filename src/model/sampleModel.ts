@@ -21,12 +21,12 @@ export const VerseSection: SectionModel = {
   name: 'Verse',
   groupBars: 4,
   bars: [
-    { id: id(), chords: ['Am'] },
-    { id: id(), chords: ['D'] },
-    { id: id(), chords: ['F'] },
-    { id: id(), chords: ['G'], label: 'second inversion' },
-    { id: id(), chords: ['Am'] },
-    { id: id(), chords: ['D'], label: 'triad only' },
+    { id: id(), chord: 'Am' },
+    { id: id(), chord: 'D' },
+    { id: id(), chord: 'F' },
+    { id: id(), chord: 'G', label: 'second inversion' },
+    { id: id(), chord: 'Am' },
+    { id: id(), chord: 'D', label: 'triad only' },
   ],
 }
 
@@ -35,8 +35,8 @@ export const PreChorusSection: SectionModel = {
   name: 'PreChorus',
   groupBars: 4,
   bars: [
-    { id: id(), chords: ['D'] },
-    { id: id(), chords: ['F7'] },
+    { id: id(), chord: 'D' },
+    { id: id(), chord: 'F7' },
   ],
 }
 
@@ -45,10 +45,10 @@ export const ChorusSection: SectionModel = {
   name: 'Chorus',
   groupBars: 4,
   bars: [
-    { id: id(), chords: ['D'] },
-    { id: id(), chords: ['F'] },
-    { id: id(), chords: ['C'] },
-    { id: id(), chords: ['G'] },
+    { id: id(), chord: 'D' },
+    { id: id(), chord: 'F' },
+    { id: id(), chord: 'C' },
+    { id: id(), chord: 'G' },
   ],
 }
 

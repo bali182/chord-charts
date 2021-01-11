@@ -1,15 +1,24 @@
+import { faChevronDown, faChevronUp, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { css } from 'emotion'
 import React, { PureComponent } from 'react'
+import { CircularButton } from '../editor/CircularButton'
 import { SectionModel } from '../model/Model'
 import { SectionTheme, Theme } from '../model/Theme'
 import { Bar } from './Bar'
 import { ChordChartContext } from './ChordChartContext'
-import { getSectionColor, isLightColor, withOpacity } from './utils'
+import { getContrastColor, getSectionColor, isLightColor, withOpacity } from './utils'
 
 export type SectionProps = {
   section: SectionModel
 }
 
+export type SectionState = {
+  isMouseOver: boolean
+}
+
 const sectionStyle = (theme: Theme, sTheme: SectionTheme, color: string): React.CSSProperties => ({
+  position: 'relative',
   display: 'flex',
   flexDirection: 'row',
   borderRadius: sTheme.radius,
@@ -26,6 +35,7 @@ const titleContainerStyle = (sTheme: SectionTheme, color: string): React.CSSProp
   borderTopLeftRadius: sTheme.radius,
   borderBottomLeftRadius: sTheme.radius,
   padding: sTheme.spacing,
+  cursor: 'pointer',
   backgroundColor: isLightColor(color) ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)',
 })
 
@@ -48,24 +58,126 @@ const barsContainerStyle = (sTheme: SectionTheme, groupBars: number): React.CSSP
   padding: sTheme.spacing,
 })
 
-export class Section extends PureComponent<SectionProps> {
+const appendStyle = (theme: Theme, contrastColor: string): React.CSSProperties => ({
+  overflow: 'hidden',
+  height: theme.section.barHeight,
+  padding: theme.section.spacing,
+  flexShrink: 0,
+  display: 'flex',
+  flexDirection: 'row',
+  alignContent: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  justifyItems: 'center',
+  border: `1px dashed ${contrastColor}`,
+  cursor: 'pointer',
+  color: contrastColor,
+  borderRadius: theme.section.radius,
+})
+
+const editorStripStyle = css({
+  position: 'absolute',
+  top: '0px',
+  right: '-15px',
+  width: '30px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyItems: 'center',
+  justifyContent: 'center',
+  alignItems: 'center',
+  alignContent: 'center',
+  height: '100%',
+})
+
+export class Section extends PureComponent<SectionProps, SectionState> {
+  state: SectionState = {
+    isMouseOver: false,
+  }
+
+  renderAddBar(theme: Theme, color: string, readOnly: boolean) {
+    if (readOnly) {
+      return null
+    }
+    const { section } = this.props
+    const contrastColor = getContrastColor(color)
+    return (
+      <ChordChartContext.Consumer>
+        {({ addBar }) => (
+          <div style={appendStyle(theme, contrastColor)} onClick={() => addBar(section.id)}>
+            <FontAwesomeIcon icon={faPlus} size={'2x'} color={contrastColor} />
+            <span style={{ marginLeft: theme.section.spacing, color: contrastColor }}>Add bar</span>
+          </div>
+        )}
+      </ChordChartContext.Consumer>
+    )
+  }
+
+  renderEditorStrip(readOnly: boolean) {
+    if (readOnly) {
+      return null
+    }
+    const { section } = this.props
+    return (
+      <ChordChartContext.Consumer>
+        {({ moveSectionDown, moveSectionUp, deleteSection }) => (
+          <div className={editorStripStyle}>
+            <CircularButton
+              icon={faChevronUp}
+              tooltip="Move section up"
+              placeTooltip="right"
+              onClick={() => moveSectionUp(section.id)}
+            />
+            <CircularButton
+              icon={faChevronDown}
+              tooltip="Move section down"
+              placeTooltip="right"
+              onClick={() => moveSectionDown(section.id)}
+            />
+            <CircularButton
+              icon={faTimes}
+              tooltip="Delete section"
+              placeTooltip="right"
+              onClick={() => deleteSection(section.id)}
+            />
+          </div>
+        )}
+      </ChordChartContext.Consumer>
+    )
+  }
+
+  onMouseEnter = () => {
+    this.setState({ isMouseOver: true })
+  }
+
+  onMouseLeave = () => {
+    this.setState({ isMouseOver: false })
+  }
+
   render() {
     return (
       <ChordChartContext.Consumer>
-        {({ theme, model }) => {
+        {({ theme, chart, setSelection, readOnly }) => {
           const { section } = this.props
-          const index = model.sections.indexOf(section)
+          const index = chart.sections.indexOf(section)
           const sColor = getSectionColor(theme, index)
           return (
-            <div style={sectionStyle(theme, theme.section, sColor)} key={section.name}>
-              <div style={titleContainerStyle(theme.section, sColor)}>
+            <div
+              style={sectionStyle(theme, theme.section, sColor)}
+              key={section.name}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}>
+              <div
+                style={titleContainerStyle(theme.section, sColor)}
+                onClick={readOnly ? null : () => setSelection({ type: 'section-selection', id: section.id })}>
                 <div style={titleStyle(theme.section, sColor)}>{section.name}</div>
               </div>
               <div style={barsContainerStyle(theme.section, section.groupBars)}>
                 {section.bars.map((bar, index) => (
                   <Bar key={`${section.name}-${index}`} bar={bar} section={section} />
                 ))}
+                {this.renderAddBar(theme, sColor, readOnly)}
               </div>
+              {this.renderEditorStrip(readOnly)}
             </div>
           )
         }}

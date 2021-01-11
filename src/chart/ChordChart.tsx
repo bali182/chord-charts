@@ -2,32 +2,34 @@ import React, { PureComponent } from 'react'
 import { ChordChartContext, ChordChartContextType } from './ChordChartContext'
 import { Header } from './Header'
 import { Section } from './Section'
-import { Model } from '../model/Model'
 import { Theme } from '../model/Theme'
-import { SelectionModel } from '../model/Selection'
-import { ChartMutatorContext } from '../ChartMutatorContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { css } from 'emotion'
 
-export type ChordChartProps = {
-  theme: Theme
-  model: Model
-  readOnly: boolean
-  selection: SelectionModel
-}
-
-const frameStyle = (theme: Theme, readOnly: boolean): React.CSSProperties => ({
-  overflow: 'hidden',
-  height: theme.height,
+const containerStyle = (theme: Theme, readOnly: boolean): React.CSSProperties => ({
+  position: 'relative',
+  overflow: readOnly ? 'hidden' : null,
+  height: readOnly ? theme.height : 'auto',
   width: theme.width,
   padding: theme.spacing,
   flexShrink: 0,
-  border: readOnly ? 'none' : '1px dashed lightgray',
 })
+
+const outlineStyle = (theme: Theme) =>
+  css({
+    position: 'absolute',
+    top: '0px',
+    left: '0px',
+    height: theme.height,
+    width: theme.width,
+    border: '1px dashed lightgray',
+    flexShrink: 0,
+    pointerEvents: 'none',
+  })
 
 const appendStyle = (theme: Theme): React.CSSProperties => ({
   overflow: 'hidden',
-  height: theme.section.barHeight,
   padding: theme.section.spacing,
   flexShrink: 0,
   display: 'flex',
@@ -41,48 +43,35 @@ const appendStyle = (theme: Theme): React.CSSProperties => ({
   borderRadius: theme.section.radius,
 })
 
-export class ChordChart extends PureComponent<ChordChartProps> {
-  private renderSections() {
-    const { model } = this.props
-    return model.sections.map((section) => <Section key={section.name} section={section} />)
+export class ChordChart extends PureComponent {
+  private renderSections({ chart, readOnly }: ChordChartContextType) {
+    return chart.sections.map((section) => <Section key={section.name} section={section} />)
   }
 
-  private createContext(): ChordChartContextType {
-    const { model, theme, selection } = this.props
-    return {
-      model,
-      theme,
-      selection,
-    }
-  }
-
-  private renderAppendSection() {
-    const { readOnly, theme } = this.props
+  private renderAppendSection({ theme, readOnly, addSection }: ChordChartContextType) {
     if (readOnly) {
       return null
     }
     return (
-      <ChartMutatorContext.Consumer>
-        {({ addSection }) => (
-          <div style={appendStyle(theme)} onClick={addSection}>
-            <FontAwesomeIcon icon={faPlus} size={'2x'} />
-            <span style={{ marginLeft: theme.section.spacing }}>Add song section</span>
-          </div>
-        )}
-      </ChartMutatorContext.Consumer>
+      <div style={appendStyle(theme)} onClick={addSection}>
+        <FontAwesomeIcon icon={faPlus} size={'2x'} />
+        <span style={{ marginLeft: theme.section.spacing }}>Add song section</span>
+      </div>
     )
   }
 
   render() {
-    const { theme, readOnly } = this.props
     return (
-      <ChordChartContext.Provider value={this.createContext()}>
-        <div style={frameStyle(theme, readOnly)}>
-          <Header />
-          {this.renderSections()}
-          {this.renderAppendSection()}
-        </div>
-      </ChordChartContext.Provider>
+      <ChordChartContext.Consumer>
+        {(context) => (
+          <div style={containerStyle(context.theme, context.readOnly)}>
+            <Header />
+            {this.renderSections(context)}
+            {this.renderAppendSection(context)}
+            <div className={outlineStyle(context.theme)} />
+          </div>
+        )}
+      </ChordChartContext.Consumer>
     )
   }
 }

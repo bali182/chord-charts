@@ -5,12 +5,17 @@ import { Theme } from '../model/Theme'
 
 export type ChordChartContextType = {
   theme: Theme
-  model: Model
+  chart: Model
   selection: SelectionModel
+  readOnly: boolean
+
+  addSection?: () => void
+  addBar?: (sectionId: string) => void
+  moveSectionUp?: (sectionId: string) => void
+  moveSectionDown?: (sectionId: string) => void
+  deleteSection?: (sectionId: string) => void
+  deleteBar?: (barId: string) => void
+  setSelection?: (sel: SelectionModel) => void
 }
 
-export const ChordChartContext = createContext<ChordChartContextType>({
-  model: null,
-  theme: null,
-  selection: null,
-})
+export const ChordChartContext = createContext<ChordChartContextType>(null)

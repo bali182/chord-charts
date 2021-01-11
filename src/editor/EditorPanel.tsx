@@ -15,10 +15,12 @@ import {
   isThemeSelection,
   SelectionModel,
 } from '../model/Selection'
-import { Model } from '../model/Model'
+import { BarModel, Model, SectionModel } from '../model/Model'
 import { Theme } from '../model/Theme'
 import { EditorHeader, EditorTitle } from './EditorHeader'
-import { isNil } from '../utils'
+import { flatMap, isNil } from '../utils'
+import { BarEditor } from './BarEditor'
+import { SectionEditor } from './SectionEditor'
 
 const editorPanelStyle = (visible: boolean) =>
   css({
@@ -30,7 +32,7 @@ const editorPanelStyle = (visible: boolean) =>
     overflowX: visible ? 'auto' : 'hidden',
     backgroundColor: '#fff',
     borderLeftColor: '#bbb',
-    borderLeftWidth: '1px',
+    borderLeftWidth: '0px',
     borderLeftStyle: 'solid',
     boxShadow: '0px 0px 24px 0px rgba(0,0,0,0.3)',
   })
@@ -67,6 +69,29 @@ export class _EditorPanel extends PureComponent<EditorPanelProps, EditorPanelSta
   //   closedSections: values(ThemeSectionIds).reduce((sections, key) => ({ ...sections, [key]: true }), {}),
   // }
 
+  private onBarChanged = (bar: BarModel) => {
+    const { chart, updateChart } = this.props
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.map((section) => ({
+          ...section,
+          bars: section.bars.map((b) => (b.id === bar.id ? bar : b)),
+        })),
+      },
+    })
+  }
+
+  private onSectionChanged = (section: SectionModel) => {
+    const { chart, updateChart } = this.props
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.map((s) => (s.id === section.id ? section : s)),
+      },
+    })
+  }
+
   private removeSelection = () => {
     const { setSelection } = this.props
     setSelection({ selection: null })
@@ -99,14 +124,18 @@ export class _EditorPanel extends PureComponent<EditorPanelProps, EditorPanelSta
   }
 
   private renderEditor(): ReactNode {
-    const { selection } = this.props
+    const { selection, chart } = this.props
     if (isNil(selection)) {
       return null
     }
-    // if (isMarkerSelection(selection)) {
-    //   const marker = fretboard.markers.find((marker) => marker.id === selection.markerId)
-    //   return <MarkerEditor marker={marker} onChange={this.onMarkerChange} fretboard={fretboard} />
-    // } else if (isStringSelection(selection)) {
+    if (isBarSelection(selection)) {
+      const bar = flatMap(chart.sections, (section) => section.bars).find((bar) => bar.id === selection.id)
+      return <BarEditor bar={bar} onChange={this.onBarChanged} />
+    } else if (isSectionSelection(selection)) {
+      const section = chart.sections.find((section) => section.id === selection.id)
+      return <SectionEditor section={section} onChange={this.onSectionChanged} />
+    }
+    // else if (isStringSelection(selection)) {
     //   const string = fretboard.strings.find((string) => string.id === selection.stringId)
     //   return <StringEditor string={string} onChange={this.onStringChange} />
     // } else if (isFretboardSelection(selection)) {
