@@ -1,27 +1,26 @@
 import React, { PureComponent } from 'react'
-import { EditorField } from './EditorField'
-import { EditorString } from './EditorString'
-import { EditorPadding } from './EditorPadding'
+import { EditorField } from '../ux/EditorField'
+import { EditorString } from '../ux/EditorString'
 import { SectionModel } from '../model/Model'
-import { EditorNumber } from './EditorNumber'
+import { EditorNumber } from '../ux/EditorNumber'
 
 export type SectionEditorProps = {
-  section: SectionModel
+  value: SectionModel
   onChange: (model: SectionModel) => void
 }
 
 export class SectionEditor extends PureComponent<SectionEditorProps> {
   private onNameChanged = (name: string) => {
-    const { onChange, section } = this.props
+    const { onChange, value: section } = this.props
     onChange({ ...section, name })
   }
   private onGroupBarsChanged = (groupBars: number) => {
-    const { onChange, section } = this.props
+    const { onChange, value: section } = this.props
     onChange({ ...section, groupBars })
   }
 
   private renderNameEditor() {
-    const { section } = this.props
+    const { value: section } = this.props
     return (
       <EditorField name="Name" description="Name of the section (eg.: Verse or Chorus)">
         <EditorString value={section.name} onChange={this.onNameChanged} />
@@ -30,7 +29,7 @@ export class SectionEditor extends PureComponent<SectionEditorProps> {
   }
 
   private renderGroupBars() {
-    const { section } = this.props
+    const { value: section } = this.props
     return (
       <EditorField name="Bars in a row" description="Specify how many bars you want to see in a row, typically 4 or 8">
         <EditorNumber value={section.groupBars} onChange={this.onGroupBarsChanged} />
@@ -40,10 +39,10 @@ export class SectionEditor extends PureComponent<SectionEditorProps> {
 
   render() {
     return (
-      <EditorPadding>
+      <React.Fragment>
         {this.renderNameEditor()}
         {this.renderGroupBars()}
-      </EditorPadding>
+      </React.Fragment>
     )
   }
 }

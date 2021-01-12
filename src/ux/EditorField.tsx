@@ -9,6 +9,9 @@ export type EditorFieldProps = {
 
 const fieldStyle = css({
   marginBottom: '20px',
+  ':last-of-type': {
+    marginBottom: '0px',
+  },
 })
 
 const fieldNameStyle = css({

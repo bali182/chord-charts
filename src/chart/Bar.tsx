@@ -1,12 +1,14 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { css } from 'emotion'
 import React, { PureComponent } from 'react'
-import { CircularButton } from '../editor/CircularButton'
+import { BarEditor } from '../editor/BarEditor'
+import { CircularButton } from '../ux/CircularButton'
 import { BarModel, SectionModel } from '../model/Model'
 import { isBarSelection } from '../model/Selection'
 import { SectionTheme } from '../model/Theme'
 import { isNil } from '../utils'
 import { ChordChartContext } from './ChordChartContext'
+import { EditorPopover } from '../ux/EditorPopover'
 import { getSectionColor, getContrastColor, isLightColor } from './utils'
 
 export type BarProps = {
@@ -55,14 +57,10 @@ const barLabelStyle = (
 
 const editorStripStyle = css({
   position: 'absolute',
-  top: '0px',
-  right: '-15px',
+  top: '-10px',
+  left: '-10px',
   display: 'flex',
   flexDirection: 'column',
-  justifyItems: 'center',
-  justifyContent: 'center',
-  alignItems: 'center',
-  alignContent: 'center',
   height: '100%',
 })
 
@@ -102,21 +100,30 @@ export class Bar extends PureComponent<BarProps> {
   render() {
     return (
       <ChordChartContext.Consumer>
-        {({ theme, chart, selection, setSelection, readOnly }) => {
+        {({ theme, chart, selection, setSelection, readOnly, updateBar }) => {
           const { section, bar } = this.props
           const isActive = !isNil(selection) && isBarSelection(selection) && selection.id === bar.id
           const sectionIndex = chart.sections.indexOf(section)
           const sColor = getSectionColor(theme, sectionIndex)
           const isLight = isLightColor(sColor)
           return (
-            <div
-              onClick={() => setSelection({ id: bar.id, type: 'bar-selection' })}
-              className={readOnly || isActive ? null : barStyleExtra(isLight)}
-              style={barStyle(theme.section, isLight, isActive)}>
-              <div style={barNameStyle(theme.section, isLight, isActive, sColor)}>{bar.chord}</div>
-              <span style={barLabelStyle(theme.section, isLight, isActive, sColor)}>{bar.label}</span>
-              {this.renderEditorStrip(readOnly, isActive)}
-            </div>
+            <EditorPopover
+              title="Edit bar"
+              value={bar}
+              readOnly={readOnly}
+              EditorComponent={BarEditor}
+              isOpen={isActive}
+              onChange={(b) => updateBar(b)}
+              onClose={() => setSelection(null)}>
+              <div
+                onClick={() => setSelection({ id: bar.id, type: 'bar-selection' })}
+                className={readOnly || isActive ? null : barStyleExtra(isLight)}
+                style={barStyle(theme.section, isLight, isActive)}>
+                <div style={barNameStyle(theme.section, isLight, isActive, sColor)}>{bar.chord}</div>
+                <span style={barLabelStyle(theme.section, isLight, isActive, sColor)}>{bar.label}</span>
+                {this.renderEditorStrip(readOnly, isActive)}
+              </div>
+            </EditorPopover>
           )
         }}
       </ChordChartContext.Consumer>

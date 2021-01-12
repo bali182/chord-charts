@@ -44,8 +44,8 @@ const appendStyle = (theme: Theme): React.CSSProperties => ({
 })
 
 export class ChordChart extends PureComponent {
-  private renderSections({ chart, readOnly }: ChordChartContextType) {
-    return chart.sections.map((section) => <Section key={section.name} section={section} />)
+  private renderSections({ chart }: ChordChartContextType) {
+    return chart.sections.map((section) => <Section key={section.id} section={section} />)
   }
 
   private renderAppendSection({ theme, readOnly, addSection }: ChordChartContextType) {

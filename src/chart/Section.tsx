@@ -2,19 +2,19 @@ import { faChevronDown, faChevronUp, faPlus, faTimes } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { css } from 'emotion'
 import React, { PureComponent } from 'react'
-import { CircularButton } from '../editor/CircularButton'
+import { CircularButton } from '../ux/CircularButton'
 import { SectionModel } from '../model/Model'
 import { SectionTheme, Theme } from '../model/Theme'
 import { Bar } from './Bar'
 import { ChordChartContext } from './ChordChartContext'
 import { getContrastColor, getSectionColor, isLightColor, withOpacity } from './utils'
+import { SectionEditor } from '../editor/SectionEditor'
+import { isSectionSelection } from '../model/Selection'
+import { isNil } from '../utils'
+import { EditorPopover } from '../ux/EditorPopover'
 
 export type SectionProps = {
   section: SectionModel
-}
-
-export type SectionState = {
-  isMouseOver: boolean
 }
 
 const sectionStyle = (theme: Theme, sTheme: SectionTheme, color: string): React.CSSProperties => ({
@@ -89,11 +89,7 @@ const editorStripStyle = css({
   height: '100%',
 })
 
-export class Section extends PureComponent<SectionProps, SectionState> {
-  state: SectionState = {
-    isMouseOver: false,
-  }
-
+export class Section extends PureComponent<SectionProps> {
   renderAddBar(theme: Theme, color: string, readOnly: boolean) {
     if (readOnly) {
       return null
@@ -145,35 +141,34 @@ export class Section extends PureComponent<SectionProps, SectionState> {
     )
   }
 
-  onMouseEnter = () => {
-    this.setState({ isMouseOver: true })
-  }
-
-  onMouseLeave = () => {
-    this.setState({ isMouseOver: false })
-  }
-
   render() {
     return (
       <ChordChartContext.Consumer>
-        {({ theme, chart, setSelection, readOnly }) => {
+        {({ theme, chart, setSelection, readOnly, selection, updateSection }) => {
           const { section } = this.props
           const index = chart.sections.indexOf(section)
           const sColor = getSectionColor(theme, index)
+          const isActive = !isNil(selection) && isSectionSelection(selection) && selection.id === section.id
           return (
-            <div
-              style={sectionStyle(theme, theme.section, sColor)}
-              key={section.name}
-              onMouseEnter={this.onMouseEnter}
-              onMouseLeave={this.onMouseLeave}>
-              <div
-                style={titleContainerStyle(theme.section, sColor)}
-                onClick={readOnly ? null : () => setSelection({ type: 'section-selection', id: section.id })}>
-                <div style={titleStyle(theme.section, sColor)}>{section.name}</div>
-              </div>
+            <div style={sectionStyle(theme, theme.section, sColor)}>
+              <EditorPopover
+                readOnly={readOnly}
+                value={section}
+                onChange={(newSection: SectionModel) => updateSection(newSection)}
+                EditorComponent={SectionEditor}
+                isOpen={isActive}
+                title="Edit section"
+                onClose={() => setSelection(null)}>
+                <div
+                  style={titleContainerStyle(theme.section, sColor)}
+                  onClick={readOnly ? null : () => setSelection({ type: 'section-selection', id: section.id })}>
+                  <div style={titleStyle(theme.section, sColor)}>{section.name}</div>
+                </div>
+              </EditorPopover>
+
               <div style={barsContainerStyle(theme.section, section.groupBars)}>
                 {section.bars.map((bar, index) => (
-                  <Bar key={`${section.name}-${index}`} bar={bar} section={section} />
+                  <Bar key={bar.id} bar={bar} section={section} />
                 ))}
                 {this.renderAddBar(theme, sColor, readOnly)}
               </div>

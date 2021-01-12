@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { Model } from '../model/Model'
+import { BarModel, Model, SectionModel } from '../model/Model'
 import { SelectionModel } from '../model/Selection'
 import { Theme } from '../model/Theme'
 
@@ -16,6 +16,9 @@ export type ChordChartContextType = {
   deleteSection?: (sectionId: string) => void
   deleteBar?: (barId: string) => void
   setSelection?: (sel: SelectionModel) => void
+  updateSection?: (section: SectionModel) => void
+  updateBar?: (section: BarModel) => void
+  updateChart?: (section: Model) => void
 }
 
 export const ChordChartContext = createContext<ChordChartContextType>(null)

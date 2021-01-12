@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react'
 import { css } from 'emotion'
 import { connect } from 'react-redux'
-import { Model } from './model/Model'
+import { BarModel, Model, SectionModel } from './model/Model'
 import { ChordChart } from './chart/ChordChart'
 import { ChordChartAppState } from './state/state'
 import { Theme } from './model/Theme'
 import { isBarSelection, isSectionSelection, SelectionModel } from './model/Selection'
-import { EditorHeader, EditorTitle } from './editor/EditorHeader'
 import { setSelection } from './state/selection/selection.actionCreators'
 import { updateChart } from './state/chart/chart.actionCreators'
 import { id } from './chart/utils'
@@ -47,7 +46,7 @@ type ActionCreatorProps = {
 
 export class _ChordChartView extends PureComponent<ChordChartViewProps> {
   addSection = () => {
-    const { updateChart, setSelection, chart } = this.props
+    const { updateChart, chart } = this.props
     const sectionId = id()
     updateChart({
       chart: {
@@ -62,11 +61,9 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
         ]),
       },
     })
-
-    setSelection({ selection: { type: 'section-selection', id: sectionId } })
   }
   addBar = (sectionId: string) => {
-    const { updateChart, setSelection, chart } = this.props
+    const { updateChart, chart } = this.props
     const barId = id()
     updateChart({
       chart: {
@@ -88,9 +85,8 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
         }),
       },
     })
-
-    setSelection({ selection: { type: 'bar-selection', id: barId } })
   }
+
   moveSectionUp = (sectionId: string) => {
     const { updateChart, chart } = this.props
     const index = chart.sections.findIndex((section) => section.id === sectionId)
@@ -104,6 +100,7 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
       chart: { ...chart, sections: newSections },
     })
   }
+
   moveSectionDown = (sectionId: string) => {
     const { updateChart, chart } = this.props
     const index = chart.sections.findIndex((section) => section.id === sectionId)
@@ -117,6 +114,7 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
       chart: { ...chart, sections: newSections },
     })
   }
+
   deleteSection = (sectionId: string) => {
     const { updateChart, setSelection, chart, selection } = this.props
     if (!isNil(selection) && isSectionSelection(selection) && selection.id === sectionId) {
@@ -130,6 +128,7 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
       },
     })
   }
+
   deleteBar = (barId: string) => {
     const { updateChart, setSelection, selection, chart } = this.props
     if (!isNil(selection) && isBarSelection(selection) && selection.id === barId) {
@@ -145,6 +144,37 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
       },
     })
   }
+
+  updateChart = (c: Model) => {
+    const { updateChart } = this.props
+    updateChart({
+      chart: c,
+    })
+  }
+
+  updateSection = (section: SectionModel) => {
+    const { updateChart, chart } = this.props
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.map((s) => (s.id === section.id ? section : s)),
+      },
+    })
+  }
+
+  updateBar = (bar: BarModel) => {
+    const { updateChart, chart } = this.props
+    updateChart({
+      chart: {
+        ...chart,
+        sections: chart.sections.map((s) => ({
+          ...s,
+          bars: s.bars.map((b) => (b.id === bar.id ? bar : b)),
+        })),
+      },
+    })
+  }
+
   setSelection = (selection: SelectionModel) => {
     const { setSelection } = this.props
     setSelection({ selection })
@@ -160,6 +190,9 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
       deleteSection: this.deleteSection,
       deleteBar: this.deleteBar,
       setSelection: this.setSelection,
+      updateBar: this.updateBar,
+      updateSection: this.updateSection,
+      updateChart: this.updateChart,
       chart,
       selection,
       theme,
@@ -170,9 +203,6 @@ export class _ChordChartView extends PureComponent<ChordChartViewProps> {
   render() {
     return (
       <div className={chordChartViewStyle}>
-        <EditorHeader>
-          <EditorTitle title="chord-charts" />
-        </EditorHeader>
         <div className={scrollAreaStyle}>
           <ChordChartContext.Provider value={this.createMutatorContext()}>
             <ChordChart />
