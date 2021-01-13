@@ -1,6 +1,7 @@
 import { css } from 'emotion'
 import React, { PureComponent } from 'react'
 import { ArrangementRow } from './arrangement/ArrangementRow'
+import { TempoAndBpmStrip } from './arrangement/TempoAndBpmStrip'
 import { ContextProviderWrapper } from './ContextProviderWrapper'
 
 const arrangementViewStyle = css({
@@ -11,6 +12,7 @@ const arrangementViewStyle = css({
   alignItems: 'center',
   alignContent: 'center',
   justifyContent: 'center',
+  position: 'relative',
 })
 
 export class ArrangementView extends PureComponent {
@@ -18,6 +20,7 @@ export class ArrangementView extends PureComponent {
     return (
       <div className={arrangementViewStyle}>
         <ContextProviderWrapper>
+          <TempoAndBpmStrip />
           <ArrangementRow />
         </ContextProviderWrapper>
       </div>

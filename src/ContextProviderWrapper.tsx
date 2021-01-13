@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { ArrangementItem, BarModel, isArrangementSection, Model, SectionModel } from './model/Model'
 import { ChordChartAppState } from './state/state'
 import { Theme } from './model/Theme'
-import { isBarSelection, isSectionSelection, SelectionModel } from './model/Selection'
+import { isArrangementItemSelection, isBarSelection, isSectionSelection, SelectionModel } from './model/Selection'
 import { setSelection } from './state/selection/selection.actionCreators'
 import { updateChart } from './state/chart/chart.actionCreators'
 import { id } from './chart/utils'
@@ -65,6 +65,7 @@ export class _ContextProviderWrapper extends PureComponent<ContextProviderWrappe
       },
     })
   }
+
   addArrangementItem = (item: ArrangementItem) => {
     const { updateChart, chart } = this.props
     updateChart({
@@ -133,6 +134,19 @@ export class _ContextProviderWrapper extends PureComponent<ContextProviderWrappe
     })
   }
 
+  deleteArrangementItem = (itemId: string) => {
+    const { updateChart, selection, chart } = this.props
+    updateChart({
+      chart: {
+        ...chart,
+        arrangement: chart.arrangement.filter((item) => item.id !== itemId),
+      },
+    })
+    if (!isNil(selection) && isArrangementItemSelection(selection) && selection.id === itemId) {
+      setSelection({ selection: null })
+    }
+  }
+
   updateChart = (c: Model) => {
     const { updateChart } = this.props
     updateChart({
@@ -163,6 +177,16 @@ export class _ContextProviderWrapper extends PureComponent<ContextProviderWrappe
     })
   }
 
+  updateArrangementItem = (item: ArrangementItem) => {
+    const { updateChart, chart } = this.props
+    updateChart({
+      chart: {
+        ...chart,
+        arrangement: chart.arrangement.map((i) => (i.id === item.id ? item : i)),
+      },
+    })
+  }
+
   setSelection = (selection: SelectionModel) => {
     const { setSelection } = this.props
     setSelection({ selection })
@@ -182,6 +206,8 @@ export class _ContextProviderWrapper extends PureComponent<ContextProviderWrappe
       updateSection: this.updateSection,
       updateChart: this.updateChart,
       addArrangementItem: this.addArrangementItem,
+      deleteArrangementItem: this.deleteArrangementItem,
+      updateArrangementItem: this.updateArrangementItem,
       chart,
       selection,
       theme,

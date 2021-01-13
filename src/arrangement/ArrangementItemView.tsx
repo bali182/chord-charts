@@ -1,11 +1,14 @@
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { css } from 'emotion'
 import React, { PureComponent } from 'react'
 import { ChordChartContext, ChordChartContextType } from '../chart/ChordChartContext'
 import { getContrastColor, getSectionColor } from '../chart/utils'
-import { ArrangementItem, isArrangementSection } from '../model/Model'
-import { isArrangementItemSection } from '../model/Selection'
+import { ArrangementItem, isArrangementIdle, isArrangementSection } from '../model/Model'
+import { isArrangementItemSelection } from '../model/Selection'
 import { barToMs, isNil } from '../utils'
+import { CircularButton } from '../ux/CircularButton'
 import { EditorPopover } from '../ux/EditorPopover'
+import { ArrangementItemSelector } from './ArrangementItemSelector'
 
 type ArrangementItemViewProps = {
   item: ArrangementItem
@@ -17,6 +20,7 @@ type ArrangementItemViewState = {
 
 const sectionStyle = (color: string, textColor: string, ms: number) =>
   css({
+    position: 'relative',
     padding: '10px',
     flexShrink: 0,
     display: 'flex',
@@ -36,6 +40,15 @@ const sectionStyle = (color: string, textColor: string, ms: number) =>
       marginRight: '0px',
     },
   })
+
+const editorStripStyle = css({
+  position: 'absolute',
+  top: '-10px',
+  left: '-10px',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+})
 
 export class ArrangementItemView extends PureComponent<ArrangementItemViewProps, ArrangementItemViewState> {
   state: ArrangementItemViewState = {
@@ -83,6 +96,23 @@ export class ArrangementItemView extends PureComponent<ArrangementItemViewProps,
     }
   }
 
+  private renderDeleteButton(context: ChordChartContextType) {
+    const { item } = this.props
+    const { isMouseOver } = this.state
+    if (!isMouseOver) {
+      return null
+    }
+    return (
+      <CircularButton
+        icon={faTimes}
+        onClick={(e) => {
+          e.stopPropagation()
+          context.deleteArrangementItem(item.id)
+        }}
+      />
+    )
+  }
+
   render() {
     const { item } = this.props
     return (
@@ -90,24 +120,38 @@ export class ArrangementItemView extends PureComponent<ArrangementItemViewProps,
         {(context) => {
           const { setSelection } = context
           const isActive =
-            !isNil(context.selection) && isArrangementItemSection(context.selection) && context.selection.id === item.id
+            !isNil(context.selection) &&
+            isArrangementItemSelection(context.selection) &&
+            context.selection.id === item.id
+          const className = sectionStyle(
+            this.getColor(context, item),
+            this.getTextColor(context, item),
+            this.getLength(context, item)
+          )
           return (
             <EditorPopover
               isOpen={isActive}
               passThrough={false}
               title="Edit song section"
               onClose={() => setSelection(null)}
-              render={() => <div />}>
+              render={() => (
+                <ArrangementItemSelector
+                  item={item}
+                  showIdle={isArrangementIdle(item)}
+                  showSections={isArrangementSection(item)}
+                  onItemSelected={(item) => {
+                    context.updateArrangementItem(item)
+                    setSelection(null)
+                  }}
+                />
+              )}>
               <div
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
                 onClick={() => setSelection({ type: 'arrangement-selection', id: item.id })}
-                className={sectionStyle(
-                  this.getColor(context, item),
-                  this.getTextColor(context, item),
-                  this.getLength(context, item)
-                )}>
+                className={className}>
                 {this.getLabel(context, item)}
+                <div className={editorStripStyle}>{this.renderDeleteButton(context)}</div>
               </div>
             </EditorPopover>
           )

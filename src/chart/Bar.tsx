@@ -16,6 +16,10 @@ export type BarProps = {
   bar: BarModel
 }
 
+export type BarState = {
+  isMouseOver: boolean
+}
+
 const barStyle = (sTheme: SectionTheme, isLight: boolean, isActive: boolean): React.CSSProperties => ({
   position: 'relative',
   display: 'flex',
@@ -72,9 +76,16 @@ const barStyleExtra = (isLight: boolean) =>
     },
   })
 
-export class Bar extends PureComponent<BarProps> {
+export class Bar extends PureComponent<BarProps, BarState> {
+  state: BarState = {
+    isMouseOver: false,
+  }
+
+  onMouseEnter = () => this.setState({ isMouseOver: true })
+  onMouseLeave = () => this.setState({ isMouseOver: false })
+
   renderEditorStrip(readOnly: boolean, isActive: boolean) {
-    if (readOnly || !isActive) {
+    if (readOnly || !this.state.isMouseOver) {
       return null
     }
     const { bar } = this.props
@@ -114,6 +125,8 @@ export class Bar extends PureComponent<BarProps> {
               isOpen={isActive}
               onClose={() => setSelection(null)}>
               <div
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
                 onClick={() => setSelection({ id: bar.id, type: 'bar-selection' })}
                 className={readOnly || isActive ? null : barStyleExtra(isLight)}
                 style={barStyle(theme.section, isLight, isActive)}>

@@ -16,10 +16,12 @@ export type ChordChartContextType = {
   moveSectionDown?: (sectionId: string) => void
   deleteSection?: (sectionId: string) => void
   deleteBar?: (barId: string) => void
+  deleteArrangementItem?: (itemId: string) => void
   setSelection?: (sel: SelectionModel) => void
   updateSection?: (section: SectionModel) => void
   updateBar?: (section: BarModel) => void
-  updateChart?: (section: Model) => void
+  updateChart?: (chart: Model) => void
+  updateArrangementItem?: (item: ArrangementItem) => void
 }
 
 export const ChordChartContext = createContext<ChordChartContextType>(null)

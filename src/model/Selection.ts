@@ -40,6 +40,6 @@ export function isChordChartSelection(sel: SelectionModel): sel is ChordChartSel
 export function isThemeSelection(sel: SelectionModel): sel is ThemeSelection {
   return sel.type === 'theme-selection'
 }
-export function isArrangementItemSection(sel: SelectionModel): sel is ArrangementItemSelection {
+export function isArrangementItemSelection(sel: SelectionModel): sel is ArrangementItemSelection {
   return sel.type === 'arrangement-selection'
 }

@@ -6,7 +6,7 @@ import { ChordChartContext, ChordChartContextType } from '../chart/ChordChartCon
 import { ArrangementItem } from '../model/Model'
 import { EditorPopover } from '../ux/EditorPopover'
 import { ArrangementItemView } from './ArrangementItemView'
-import { SectionAppender } from './SectionAppender'
+import { ArrangementItemSelector } from './ArrangementItemSelector'
 
 const rowStyle = css({
   width: '100%',
@@ -54,7 +54,9 @@ export class ArrangementRow extends PureComponent<{}, ArrangementRowState> {
         isOpen={isAppenderPopShowing}
         onClose={this.closeAppenderPopup}
         passThrough={false}
-        render={() => <SectionAppender onItemSelected={this.onItemAdded(context)} />}
+        render={() => (
+          <ArrangementItemSelector onItemSelected={this.onItemAdded(context)} item={null} showIdle showSections />
+        )}
         title="Select section">
         <div className={appendStyle} onClick={this.openAppenderPopup}>
           <FontAwesomeIcon icon={faPlus} size={'2x'} />
