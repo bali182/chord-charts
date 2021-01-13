@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { BarModel, Model, SectionModel } from '../model/Model'
+import { ArrangementItem, BarModel, Model, SectionModel } from '../model/Model'
 import { SelectionModel } from '../model/Selection'
 import { Theme } from '../model/Theme'
 
@@ -11,6 +11,7 @@ export type ChordChartContextType = {
 
   addSection?: () => void
   addBar?: (sectionId: string) => void
+  addArrangementItem?: (item: ArrangementItem) => void
   moveSectionUp?: (sectionId: string) => void
   moveSectionDown?: (sectionId: string) => void
   deleteSection?: (sectionId: string) => void

@@ -6,7 +6,6 @@ const tabContentStyle = css({
   flexShrink: 1,
   flexBasis: '1px',
   backgroundColor: 'white',
-  boxShadow: '0px 0px 24px 0px rgba(0,0,0,0.3)',
 })
 
 export class TabContent extends PureComponent {

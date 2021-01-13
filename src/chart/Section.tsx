@@ -152,12 +152,10 @@ export class Section extends PureComponent<SectionProps> {
           return (
             <div style={sectionStyle(theme, theme.section, sColor)}>
               <EditorPopover
-                readOnly={readOnly}
-                value={section}
-                onChange={(newSection: SectionModel) => updateSection(newSection)}
-                EditorComponent={SectionEditor}
+                passThrough={readOnly}
                 isOpen={isActive}
                 title="Edit section"
+                render={() => <SectionEditor value={section} onChange={(s: SectionModel) => updateSection(s)} />}
                 onClose={() => setSelection(null)}>
                 <div
                   style={titleContainerStyle(theme.section, sColor)}

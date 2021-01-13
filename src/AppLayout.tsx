@@ -4,6 +4,7 @@ import { ChordChartView } from './ChordChartView'
 import { Tabs } from './ux/Tabs'
 import { faLayerGroup, faPalette, faPuzzlePiece, faVideo } from '@fortawesome/free-solid-svg-icons'
 import { TabContent } from './ux/TabContent'
+import { ArrangementView } from './ArrangementView'
 
 const appLayoutStyle = css({
   display: 'flex',
@@ -49,7 +50,7 @@ export class AppLayout extends PureComponent<{}, AppLayoutState> {
   private renderTab() {
     switch (this.state.activeTabId) {
       case TabId.ARRANGEMENT:
-        return null
+        return <ArrangementView />
       case TabId.THEME:
         return null
       case TabId.EXPORT:

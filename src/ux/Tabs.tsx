@@ -8,7 +8,7 @@ const tabsStyle = css({
   flexDirection: 'column',
   width: '110px',
   height: '100%',
-  backgroundColor: '#dedede',
+  background: 'linear-gradient(90deg, rgba(222,222,222,1) 0%, rgba(222,222,222,1) 90%, rgba(209,209,209,1) 100%)',
 })
 
 const tabStyle = (active: boolean) =>
@@ -26,8 +26,8 @@ const tabStyle = (active: boolean) =>
 
     cursor: active ? 'auto' : 'pointer',
     backgroundColor: active ? 'white' : 'transparent',
-    zIndex: active ? 3 : 0,
     color: active ? '#333' : '#444',
+    boxShadow: active ? '0px 2px 8px 0px rgba(0,0,0,0.2)' : 'none',
   })
 
 const iconStyle = css({

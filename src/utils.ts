@@ -1,3 +1,5 @@
+import { TimeSignature } from './model/Model'
+
 export function range(from: number, to: number): number[] {
   const values = []
   for (let i = from; i < to; i += 1) {
@@ -20,4 +22,25 @@ export function flatMap<T, E>(list: T[], fn: (item: T) => E[]): E[] {
     results.push(...fn(list[i]))
   }
   return results
+}
+
+function moveMutate<T>(array: T[], from: number, to: number): void {
+  const startIndex = from < 0 ? array.length + from : from
+
+  if (startIndex >= 0 && startIndex < array.length) {
+    const endIndex = to < 0 ? array.length + to : to
+
+    const [item] = array.splice(from, 1)
+    array.splice(endIndex, 0, item)
+  }
+}
+
+export function move<T>(array: T[], from: number, to: number): T[] {
+  const _array = Array.from(array)
+  moveMutate(_array, from, to)
+  return _array
+}
+
+export function barToMs(bpm: number, timeSignature: TimeSignature) {
+  return (60 / bpm) * timeSignature.upper * 1000
 }

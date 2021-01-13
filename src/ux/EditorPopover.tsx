@@ -1,17 +1,15 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { css } from 'emotion'
-import React, { PureComponent, ComponentType } from 'react'
+import React, { PureComponent, ReactElement } from 'react'
 import { ArrowContainer, Popover } from 'react-tiny-popover'
 
 export type EditorPopoverProps<T> = {
   isOpen: boolean
-  value: T
   title: string
-  readOnly: boolean
+  passThrough: boolean
   onClose: () => void
-  onChange: (value: T) => void
-  EditorComponent: ComponentType<{ value: T; onChange: (value: T) => void }>
+  render: () => ReactElement
 }
 
 export const popoverStyle = css({
@@ -19,6 +17,7 @@ export const popoverStyle = css({
   paddingBottom: '12px',
   backgroundColor: 'white',
   borderRadius: '3px',
+  minWidth: '200px',
   boxShadow: '0px 3px 8px 0px rgba(0,0,0,0.3)',
 })
 
@@ -49,7 +48,7 @@ export class EditorPopover<T> extends PureComponent<EditorPopoverProps<T>> {
   }
 
   render() {
-    const { isOpen, EditorComponent, value, onChange, title, readOnly, children } = this.props
+    const { isOpen, title, passThrough: readOnly, children, render } = this.props
     if (readOnly) {
       return children
     }
@@ -70,7 +69,7 @@ export class EditorPopover<T> extends PureComponent<EditorPopoverProps<T>> {
                 <div className={popoverTitleStyle}>{title}</div>
                 <FontAwesomeIcon icon={faTimes} onClick={this.onCloseClick} className={closeButtonStyle} />
               </div>
-              <EditorComponent value={value} onChange={onChange} />
+              {render()}
             </div>
           </ArrowContainer>
         )}>

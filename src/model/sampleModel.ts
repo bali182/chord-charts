@@ -56,14 +56,8 @@ export const sampleModel: Model = {
   id: id(),
   name: 'Sample model',
   bpm: 120,
+  timeSignature: { lower: 4, upper: 4 },
   key: 'A minor',
   sections: [VerseSection, PreChorusSection, ChorusSection],
-  sectionSequence: [
-    VerseSection.id,
-    PreChorusSection.id,
-    ChorusSection.id,
-    VerseSection.id,
-    PreChorusSection.id,
-    ChorusSection.id,
-  ],
+  arrangement: [],
 }

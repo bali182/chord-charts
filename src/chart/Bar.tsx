@@ -109,11 +109,9 @@ export class Bar extends PureComponent<BarProps> {
           return (
             <EditorPopover
               title="Edit bar"
-              value={bar}
-              readOnly={readOnly}
-              EditorComponent={BarEditor}
+              passThrough={readOnly}
+              render={() => <BarEditor value={bar} onChange={(b) => updateBar(b)} />}
               isOpen={isActive}
-              onChange={(b) => updateBar(b)}
               onClose={() => setSelection(null)}>
               <div
                 onClick={() => setSelection({ id: bar.id, type: 'bar-selection' })}

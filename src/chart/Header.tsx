@@ -30,12 +30,10 @@ export class Header extends PureComponent {
             <div style={headerStyle(theme)} onClick={() => setSelection({ type: 'chord-chart-selection' })}>
               <EditorPopover
                 title="Edit title"
-                EditorComponent={ChartNameEditor}
-                value={chart}
                 isOpen={isActive}
                 onClose={() => setSelection(null)}
-                onChange={(chart: Model) => updateChart(chart)}
-                readOnly={readOnly}>
+                render={() => <ChartNameEditor value={chart} onChange={(c: Model) => updateChart(c)} />}
+                passThrough={readOnly}>
                 <span className={titleStyle(theme)}>{chart.name}</span>
               </EditorPopover>
             </div>
