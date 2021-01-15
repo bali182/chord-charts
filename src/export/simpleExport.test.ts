@@ -6,7 +6,7 @@ import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'
 
 describe('simple videoshow video creation', () => {
   // Run this first to get the images ready for video creation
-  xit('should generate the images to use for the video', async () => {
+  it('should generate the images to use for the video', async () => {
     await createPngs(sampleModel, sampleTheme, resolve('images'))
   })
 
