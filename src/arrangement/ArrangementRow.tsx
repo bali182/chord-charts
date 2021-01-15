@@ -2,11 +2,11 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { css } from 'emotion'
 import React, { Fragment, PureComponent } from 'react'
-import { ChordChartContext, ChordChartContextType } from '../chart/ChordChartContext'
+import { ChordChartContext, ChordChartContextType } from '../chordChart/ChordChartContext'
 import { ArrangementItem } from '../model/Model'
 import { EditorPopover } from '../ux/EditorPopover'
 import { ArrangementItemView } from './ArrangementItemView'
-import { ArrangementItemSelector } from './ArrangementItemSelector'
+import { ArrangementItemSelector } from '../editor/ArrangementItemSelector'
 
 const rowStyle = css({
   width: '100%',

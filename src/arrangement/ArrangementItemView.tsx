@@ -1,14 +1,14 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { css } from 'emotion'
 import React, { PureComponent } from 'react'
-import { ChordChartContext, ChordChartContextType } from '../chart/ChordChartContext'
-import { getContrastColor, getSectionColor } from '../chart/utils'
+import { ChordChartContext, ChordChartContextType } from '../chordChart/ChordChartContext'
+import { getContrastColor, getSectionColor } from '../chordChart/utils'
 import { ArrangementItem, isArrangementIdle, isArrangementSection } from '../model/Model'
 import { isArrangementItemSelection } from '../model/Selection'
 import { barToMs, isNil } from '../utils'
 import { CircularButton } from '../ux/CircularButton'
 import { EditorPopover } from '../ux/EditorPopover'
-import { ArrangementItemSelector } from './ArrangementItemSelector'
+import { ArrangementItemSelector } from '../editor/ArrangementItemSelector'
 
 type ArrangementItemViewProps = {
   item: ArrangementItem

@@ -1,9 +1,9 @@
 import { css, cx } from 'emotion'
 import React, { Fragment, PureComponent } from 'react'
-import { ChordChartContext, ChordChartContextType } from '../chart/ChordChartContext'
-import { getSectionColor, id } from '../chart/utils'
+import { ChordChartContext, ChordChartContextType } from '../chordChart/ChordChartContext'
+import { getSectionColor } from '../chordChart/utils'
 import { ArrangementItem, isArrangementIdle, isArrangementSection, SectionModel } from '../model/Model'
-import { isNil } from '../utils'
+import { id, isNil } from '../utils'
 import { inputStyle } from '../ux/commonStyles'
 
 const sectionRowStyle = (highlighted: boolean) =>

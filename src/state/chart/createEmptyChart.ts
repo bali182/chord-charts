@@ -1,5 +1,5 @@
-import { id } from '../../chart/utils'
 import { Model } from '../../model/Model'
+import { id } from '../../utils'
 
 export function createEmptyChart(): Model {
   return {

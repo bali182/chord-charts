@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 import { css } from 'emotion'
-import { ChordChartView } from './ChordChartView'
+import { ChordChartView } from './chordChart/ChordChartView'
 import { Tabs } from './ux/Tabs'
 import { faLayerGroup, faPalette, faPuzzlePiece, faVideo } from '@fortawesome/free-solid-svg-icons'
 import { TabContent } from './ux/TabContent'
 import { ArrangementView } from './ArrangementView'
+import { ExportVideoView } from './export/ExportVideoView'
 
 const appLayoutStyle = css({
   display: 'flex',
@@ -54,7 +55,7 @@ export class AppLayout extends PureComponent<{}, AppLayoutState> {
       case TabId.THEME:
         return null
       case TabId.EXPORT:
-        return null
+        return <ExportVideoView />
       case TabId.SECTIONS:
         return <ChordChartView />
     }

@@ -1,3 +1,4 @@
+import { customAlphabet } from 'nanoid'
 import { TimeSignature } from './model/Model'
 
 export function range(from: number, to: number): number[] {
@@ -44,3 +45,5 @@ export function move<T>(array: T[], from: number, to: number): T[] {
 export function barToMs(bpm: number, timeSignature: TimeSignature) {
   return (60 / bpm) * timeSignature.upper * 1000
 }
+
+export const id = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 5)

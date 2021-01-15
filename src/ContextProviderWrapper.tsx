@@ -6,9 +6,8 @@ import { Theme } from './model/Theme'
 import { isArrangementItemSelection, isBarSelection, isSectionSelection, SelectionModel } from './model/Selection'
 import { setSelection } from './state/selection/selection.actionCreators'
 import { updateChart } from './state/chart/chart.actionCreators'
-import { id } from './chart/utils'
-import { isNil } from './utils'
-import { ChordChartContext, ChordChartContextType } from './chart/ChordChartContext'
+import { id, isNil } from './utils'
+import { ChordChartContext, ChordChartContextType } from './chordChart/ChordChartContext'
 
 type ReduxProps = {
   chart: Model

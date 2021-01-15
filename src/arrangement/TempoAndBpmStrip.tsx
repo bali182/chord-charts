@@ -1,6 +1,6 @@
 import { css, cx } from 'emotion'
 import React, { PureComponent } from 'react'
-import { ChordChartContext, ChordChartContextType } from '../chart/ChordChartContext'
+import { ChordChartContext, ChordChartContextType } from '../chordChart/ChordChartContext'
 import { inputStyle } from '../ux/commonStyles'
 
 const containerStyle = css({

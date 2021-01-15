@@ -1,6 +1,5 @@
 import { Theme } from '../model/Theme'
 import { isNil } from '../utils'
-import { customAlphabet } from 'nanoid'
 
 import Color from 'color'
 
@@ -11,8 +10,6 @@ export function getSectionColor(theme: Theme, index: number) {
   }
   return colors[index % colors.length]
 }
-
-export const id = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 5)
 
 export function isLightColor(color: string): boolean {
   return new Color(color).isLight()

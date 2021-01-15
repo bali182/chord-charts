@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { css } from 'emotion'
-import { ChordChart } from './chart/ChordChart'
-import { ContextProviderWrapper } from './ContextProviderWrapper'
+import { ChordChart } from './ChordChart'
+import { ContextProviderWrapper } from '../ContextProviderWrapper'
 
 const chordChartViewStyle = css({
   height: '100vh',

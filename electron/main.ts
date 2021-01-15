@@ -2,6 +2,10 @@ import { app, BrowserWindow, Menu } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
+import ffmpeg from 'fluent-ffmpeg'
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'
+
+ffmpeg.setFfmpegPath(ffmpegPath)
 
 let mainWindow: BrowserWindow | null
 
@@ -44,6 +48,7 @@ app
         .catch((err) => console.log('An error occurred: ', err))
     }
   })
+  .then(() => mainWindow.webContents.openDevTools())
 
 Menu.setApplicationMenu(null)
 app.allowRendererProcessReuse = true

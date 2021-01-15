@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -27,6 +28,9 @@ module.exports = {
   plugins: [
     new HtmlPlugin({
       template: 'src/index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.FLUENTFFMPEG_COV': false,
     }),
   ],
   devServer: {

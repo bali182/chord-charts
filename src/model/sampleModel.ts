@@ -1,6 +1,5 @@
 import { Model, SectionModel } from './Model'
 import { Theme } from './Theme'
-import { id } from '../chart/utils'
 
 export const sampleTheme: Theme = {
   width: 1280,
@@ -17,47 +16,52 @@ export const sampleTheme: Theme = {
 }
 
 export const VerseSection: SectionModel = {
-  id: id(),
+  id: 'verse',
   name: 'Verse',
   groupBars: 4,
   bars: [
-    { id: id(), chord: 'Am' },
-    { id: id(), chord: 'D' },
-    { id: id(), chord: 'F' },
-    { id: id(), chord: 'G', label: 'second inversion' },
-    { id: id(), chord: 'Am' },
-    { id: id(), chord: 'D', label: 'triad only' },
+    { id: '1', chord: 'Am' },
+    { id: '2', chord: 'D' },
+    { id: '3', chord: 'F' },
+    { id: '4', chord: 'G', label: 'second inversion' },
+    { id: '5', chord: 'Am' },
+    { id: '6', chord: 'D', label: 'triad only' },
   ],
 }
 
 export const PreChorusSection: SectionModel = {
-  id: id(),
+  id: 'pre-chorus',
   name: 'PreChorus',
   groupBars: 4,
   bars: [
-    { id: id(), chord: 'D' },
-    { id: id(), chord: 'F7' },
+    { id: '7', chord: 'D' },
+    { id: '8', chord: 'F7' },
   ],
 }
 
 export const ChorusSection: SectionModel = {
-  id: id(),
+  id: 'chorus',
   name: 'Chorus',
   groupBars: 4,
   bars: [
-    { id: id(), chord: 'D' },
-    { id: id(), chord: 'F' },
-    { id: id(), chord: 'C' },
-    { id: id(), chord: 'G' },
+    { id: '9', chord: 'D' },
+    { id: '10', chord: 'F' },
+    { id: '11', chord: 'C' },
+    { id: '12', chord: 'G' },
   ],
 }
 
 export const sampleModel: Model = {
-  id: id(),
+  id: 'model',
   name: 'Sample model',
   bpm: 120,
   timeSignature: { lower: 4, upper: 4 },
   key: 'A minor',
   sections: [VerseSection, PreChorusSection, ChorusSection],
-  arrangement: [],
+  arrangement: [
+    { id: 'a1', type: 'arrangement-idle', length: 1000 },
+    { id: 'a2', type: 'arrangement-section', sectionId: VerseSection.id },
+    { id: 'a3', type: 'arrangement-section', sectionId: PreChorusSection.id },
+    { id: 'a4', type: 'arrangement-section', sectionId: ChorusSection.id },
+  ],
 }
