@@ -3,8 +3,9 @@ const HtmlPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: path.join(__dirname, 'src/index'),
+  target: 'electron-renderer',
   output: {
-    path: path.join(__dirname, 'docs'),
+    path: path.join(__dirname, 'dist/renderer'),
     filename: 'bundle.js',
   },
   module: {
@@ -28,4 +29,13 @@ module.exports = {
       template: 'src/index.html',
     }),
   ],
+  devServer: {
+    contentBase: path.join(__dirname, 'dist/renderer'),
+    historyApiFallback: true,
+    compress: true,
+    hot: true,
+    host: '0.0.0.0',
+    port: 8080,
+    publicPath: '/',
+  },
 }
