@@ -1,0 +1,6 @@
+{
+  "ignore": ["src/common/**/*.ts", "src/server/**/*.ts"],
+  "watch": ["src"],
+  "exec": "yarn build-server && node ./dist/server.js",
+  "ext": "ts"
+}

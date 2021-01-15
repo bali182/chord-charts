@@ -8,7 +8,7 @@ interface CreateVideoBody {
   chart: Model
 }
 
-app.post<{ Body: CreateVideoBody }>('/create-video', async (req, reply) => {
+app.get<{ Body: CreateVideoBody }>('/create-video', async (req, reply) => {
   const { chart, theme } = req.body
   return {
     theme,
