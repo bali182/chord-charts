@@ -1,0 +1,33 @@
+import React, { PureComponent } from 'react'
+import { css } from 'emotion'
+import { ContextProviderWrapper } from '../ContextProviderWrapper'
+import { ChordChartContext, ChordChartContextType } from '../chordChart/ChordChartContext'
+
+const chordChartViewStyle = css({
+  height: '100vh',
+  overflowY: 'auto',
+  display: 'flex',
+  flexDirection: 'row',
+  flexGrow: 1,
+  flexShrink: 1,
+  flexBasis: '1px',
+  backgroundColor: '#fff',
+})
+
+export class ExportVideoView extends PureComponent {
+  doExport = (context: ChordChartContextType) => () => {}
+
+  render() {
+    return (
+      <div className={chordChartViewStyle}>
+        <ContextProviderWrapper>
+          <ChordChartContext.Consumer>
+            {(context) => {
+              return <button onClick={this.doExport(context)}>Export</button>
+            }}
+          </ChordChartContext.Consumer>
+        </ContextProviderWrapper>
+      </div>
+    )
+  }
+}
