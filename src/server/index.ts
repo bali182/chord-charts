@@ -11,6 +11,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 const clientPath = join(process.cwd(), 'dist', 'client')
+const port = process.env.PORT || 3000
 
 console.log('client path', clientPath)
 
@@ -32,6 +33,6 @@ app.get('/download', async (req, reply) => {
 
 app.use(express.static(clientPath))
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000/')
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`)
 })
