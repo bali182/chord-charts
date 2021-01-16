@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { css } from 'emotion'
 import { ContextProviderWrapper } from '../ContextProviderWrapper'
 import { ChordChartContext, ChordChartContextType } from '../chordChart/ChordChartContext'
+import { createVideo } from '../requests'
 
 const chordChartViewStyle = css({
   height: '100vh',
@@ -15,7 +16,11 @@ const chordChartViewStyle = css({
 })
 
 export class ExportVideoView extends PureComponent {
-  doExport = (context: ChordChartContextType) => () => {}
+  doExport = ({ chart, theme }: ChordChartContextType) => () => {
+    createVideo({ chart, theme }).then((result) => {
+      console.log(result)
+    })
+  }
 
   render() {
     return (

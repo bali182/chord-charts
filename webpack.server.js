@@ -5,9 +5,11 @@ const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
   entry: path.join(__dirname, 'src/server/index'),
+  target: 'node',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'server.js',
+    libraryTarget: 'commonjs',
   },
   devtool: 'source-map',
   module: {
@@ -32,5 +34,5 @@ module.exports = {
       entryOnly: false,
     }),
   ],
-  externals: [nodeExternals()],
+  externals: [nodeExternals(), 'child_process'],
 }
