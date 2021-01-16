@@ -16,7 +16,7 @@ export type SectionModel = {
   groupBars: number
 }
 
-export type Model = {
+export type ChartModel = {
   id: string
   name: string
   bpm: number

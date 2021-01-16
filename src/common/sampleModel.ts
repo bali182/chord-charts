@@ -1,4 +1,4 @@
-import { Model, SectionModel } from './Model'
+import { ChartModel, SectionModel } from './Model'
 import { Theme } from './Theme'
 
 export const sampleTheme: Theme = {
@@ -51,7 +51,7 @@ export const ChorusSection: SectionModel = {
   ],
 }
 
-export const sampleModel: Model = {
+export const sampleModel: ChartModel = {
   id: 'model',
   name: 'Sample model',
   bpm: 120,

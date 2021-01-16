@@ -1,8 +1,9 @@
-import { SetSelectionPayload, SetSelectionAction, SelectionActionType } from './selection.actionTypes'
+import { SelectionModel } from '../../../common/Selection'
+import { SetSelectionAction, SelectionActionType } from './selection.actionTypes'
 
-export function setSelection(payload: SetSelectionPayload): SetSelectionAction {
+export function setSelection(selection: SelectionModel): SetSelectionAction {
   return {
     type: SelectionActionType.SET_SELECTION,
-    payload,
+    selection,
   }
 }

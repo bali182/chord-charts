@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
 import { EditorField } from '../ux/EditorField'
 import { EditorString } from '../ux/EditorString'
-import { Model } from '../../common/Model'
+import { ChartModel } from '../../common/Model'
 
 export type ChartNameEditorProps = {
-  value: Model
-  onChange: (model: Model) => void
+  value: ChartModel
+  onChange: (model: ChartModel) => void
 }
 
 export class ChartNameEditor extends PureComponent<ChartNameEditorProps> {

@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from 'puppeteer'
 import { renderToString } from 'react-dom/server'
 import React from 'react'
-import { isArrangementIdle, isArrangementSection, Model } from '../common/Model'
+import { isArrangementIdle, isArrangementSection, ChartModel } from '../common/Model'
 import { Theme } from '../common/Theme'
 import { HtmlWrapper } from '../client/chordChart/HtmlWrapper'
 import { ChordChart } from '../client/chordChart/ChordChart'
@@ -21,7 +21,7 @@ export async function createBrowser(theme: Theme): Promise<Browser> {
   })
 }
 
-export async function toPng(page: Page, theme: Theme, model: Model, selection: BarSelection = null): Promise<Buffer> {
+export async function toPng(page: Page, theme: Theme, model: ChartModel, selection: BarSelection = null): Promise<Buffer> {
   const content = renderToString(
     <HtmlWrapper>
       <ChordChartContext.Provider value={{ chart: model, theme, selection, readOnly: true }}>
@@ -48,7 +48,7 @@ async function asTempImage(tmpPath: string, buffer: Buffer, barId: string): Prom
 }
 
 export async function createPngs(
-  model: Model,
+  model: ChartModel,
   theme: Theme,
   tmpPath: string = tmpdir()
 ): Promise<ImageRepresentation[]> {
@@ -68,7 +68,7 @@ export async function createPngs(
   return reprs
 }
 
-function createFfmpegScript(model: Model, imgs: ImageRepresentation[], outputPath: string): string {
+function createFfmpegScript(model: ChartModel, imgs: ImageRepresentation[], outputPath: string): string {
   const { arrangement } = model
   const barLength = barToMs(model.bpm, model.timeSignature)
   const loopParts: string[] = []
@@ -100,7 +100,7 @@ function createFfmpegScript(model: Model, imgs: ImageRepresentation[], outputPat
   return scriptParts.join(' ')
 }
 
-export async function createVideo(model: Model, imgs: ImageRepresentation[], videoPath: string): Promise<void> {
+export async function createVideo(model: ChartModel, imgs: ImageRepresentation[], videoPath: string): Promise<void> {
   console.log(imgs)
   const cmd = createFfmpegScript(model, imgs, videoPath)
   return new Promise((resolve, reject) => {

@@ -1,7 +1,7 @@
 import { css } from 'emotion'
 import React, { PureComponent } from 'react'
 import { ChartNameEditor } from '../editor/ChartNameEditor'
-import { Model } from '../../common/Model'
+import { ChartModel } from '../../common/Model'
 import { isChordChartSelection } from '../../common/Selection'
 import { Theme } from '../../common/Theme'
 import { isNil } from '../../common/utils'
@@ -32,7 +32,7 @@ export class Header extends PureComponent {
                 title="Edit title"
                 isOpen={isActive}
                 onClose={() => setSelection(null)}
-                render={() => <ChartNameEditor value={chart} onChange={(c: Model) => updateChart(c)} />}
+                render={() => <ChartNameEditor value={chart} onChange={(c: ChartModel) => updateChart(c)} />}
                 passThrough={readOnly}>
                 <span className={titleStyle(theme)}>{chart.name}</span>
               </EditorPopover>

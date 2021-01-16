@@ -1,9 +1,9 @@
-import { Model } from '../../common/Model'
+import { ChartModel } from '../../common/Model'
 import { SelectionModel } from '../../common/Selection'
 import { Theme } from '../../common/Theme'
 
 export type ChordChartAppState = {
-  chart: Model
+  chart: ChartModel
   theme: Theme
   selection: SelectionModel
 }

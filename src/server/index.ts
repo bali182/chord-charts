@@ -1,11 +1,12 @@
 import fastify from 'fastify'
-import { Model } from '../common/Model'
+import { ChartModel } from '../common/Model'
 import { Theme } from '../common/Theme'
+
 const app = fastify()
 
 interface CreateVideoBody {
   theme: Theme
-  chart: Model
+  chart: ChartModel
 }
 
 app.get<{ Body: CreateVideoBody }>('/create-video', async (req, reply) => {

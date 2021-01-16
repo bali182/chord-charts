@@ -1,7 +1,7 @@
-import { Model } from '../../../common/Model'
+import { ChartModel } from '../../../common/Model'
 import { id } from '../../../common/utils'
 
-export function createEmptyChart(): Model {
+export function createEmptyChart(): ChartModel {
   return {
     id: id(),
     name: 'New chord chart',

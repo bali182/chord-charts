@@ -5,13 +5,10 @@ export enum SelectionActionType {
   UNSET_SELECTION = 'UNSET_SELECTION',
 }
 
-export type SetSelectionPayload = {
-  selection: SelectionModel
-}
 
 export type SetSelectionAction = {
   type: SelectionActionType.SET_SELECTION
-  payload: SetSelectionPayload
+  selection: SelectionModel
 }
 
 export type SelectionAction = SetSelectionAction
