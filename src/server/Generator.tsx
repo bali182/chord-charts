@@ -74,6 +74,7 @@ export class Generator {
     await this.page.setViewport({ width, height })
     await this.page.setContent(`<!DOCTYPE html>${content}`)
     await this.page.screenshot({ clip: { x: 0, y: 0, width, height }, path })
+    console.log(`Frame for created at: ${path}`)
     return { barId, path }
   }
 
@@ -123,7 +124,11 @@ export class Generator {
       this.videoPath(),
     ]
 
-    return scriptParts.join(' ')
+    const script = scriptParts.join(' ')
+
+    console.log('Full ffmpeg script: ', script)
+
+    return script
   }
 
   // private async createFfmpegBatScript(script: string): Promise<void> {
@@ -151,11 +156,13 @@ export class Generator {
     // Spawn a new process and create the video
     await this.createVideo(script)
 
+    console.log('Video path: ', this.videoPath())
+
     return Promise.resolve(Generator.downloadUrl(this.folderName()))
   }
 
   static downloadUrl(tmpFolder: string): string {
-    return `http://localhost:3000/download?q=${tmpFolder}`
+    return `/download?q=${tmpFolder}`
   }
 
   static videoPathFor(tmpFolder: string): string {

@@ -1,6 +1,6 @@
 import { CreateVideoPayload } from '../common/Payloads'
 
-export const baseUrl = 'http://localhost:3000'
+export const baseUrl = ''
 
 export function createVideo(payload: CreateVideoPayload): Promise<any> {
   const config: RequestInit = {
