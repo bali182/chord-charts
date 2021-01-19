@@ -50,7 +50,11 @@ export class Generator {
   private async setup(): Promise<void> {
     await promises.mkdir(this.folderPath())
     const { width, height } = this.theme
-    this.browser = await launch({ headless: true, defaultViewport: { width, height } })
+    this.browser = await launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: true,
+      defaultViewport: { width, height },
+    })
     this.page = await this.browser.newPage()
   }
 
