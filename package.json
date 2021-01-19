@@ -13,7 +13,7 @@
     "build-server-dev": "cross-env NODE_ENV=development webpack --config webpack.server.js --mode development",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest --testTimeout=3000000",
-    "start": "npm run build-server && npm run build-client && node ./dist/server.js"
+    "start": "npm install && npm run build-server && npm run build-client && node ./dist/server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
