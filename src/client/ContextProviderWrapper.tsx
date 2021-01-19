@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, ReactNode } from 'react'
 import { connect } from 'react-redux'
 import { ChartModel } from '../common/Model'
 import { ChordChartAppState } from './state/state'
@@ -39,7 +39,9 @@ type ActionCreatorProps = {
   setSelection: typeof setSelection
 }
 
-export type ContextProviderWrapperProps = ReduxProps & ActionCreatorProps
+export type ContextProviderWrapperProps = ReduxProps & ActionCreatorProps & {
+  children: ReactNode
+}
 
 export class _ContextProviderWrapper extends PureComponent<ContextProviderWrapperProps> {
   moveSectionUp = (sectionId: string) => {

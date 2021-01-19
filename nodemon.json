@@ -1,6 +1,6 @@
 {
   "ignore": ["src/client"],
   "watch": ["src/common", "src/server"],
-  "exec": "yarn build-server-dev && node ./dist/server.js",
+  "exec": "npm run build-server-dev && node ./dist/server.js",
   "ext": "ts"
 }
