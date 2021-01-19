@@ -117,6 +117,7 @@ export class Generator {
 
     const scriptParts: string[] = [
       ffmpegPath,
+      '-threads 1',
       '-y',
       ...loopParts,
       `-filter_complex "concat=n=${loopParts.length}:v=1:a=0"`,
